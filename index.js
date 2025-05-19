@@ -16,6 +16,11 @@ const auth = new google.auth.GoogleAuth({
 const SHEET_ID = process.env.SHEET_ID;
 const SHEET_NAME = process.env.SHEET_NAME;
 
+// Test route to verify server is running
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
 
 app.post('/mark-attendance', async (req, res) => {
   try {

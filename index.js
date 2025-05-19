@@ -3,13 +3,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { google } = require('googleapis');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 app.use(cors()); 
 app.use(bodyParser.json());
 
+// Use absolute path to the secret file from Render
+const keyFilePath = '/etc/secrets/credentials.json';
+
 const auth = new google.auth.GoogleAuth({
-  keyFile: 'credentials.json', // name of the file you downloaded
+  keyFile: keyFilePath,  // <-- Use this absolute path here
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
@@ -20,7 +24,6 @@ const SHEET_NAME = process.env.SHEET_NAME;
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
-
 
 app.post('/mark-attendance', async (req, res) => {
   try {

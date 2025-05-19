@@ -28,7 +28,7 @@ app.get('/', (req, res) => res.send('Hello World'));
 
 app.post('/mark-attendance', async (req, res) => {
   try {
-    const { name, email, status, remarks } = req.body;
+    const { name, email, status, location, remarks } = req.body;
     const timestamp = new Date().toISOString();
 
     const client = await auth.getClient();
@@ -36,9 +36,9 @@ app.post('/mark-attendance', async (req, res) => {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: SHEET_ID,
-      range: `${SHEET_NAME}!A:E`,
+      range: `${SHEET_NAME}!A:F`,
       valueInputOption: 'USER_ENTERED',
-      resource: { values: [[timestamp, name, email, status, remarks]] },
+      resource: { values: [[timestamp, name, email, status, location, remarks]] },
     });
 
     res.status(200).json({ message: 'Attendance marked successfully' });

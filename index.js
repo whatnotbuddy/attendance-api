@@ -29,7 +29,14 @@ app.get('/', (req, res) => res.send('Hello World'));
 app.post('/mark-attendance', async (req, res) => {
   try {
     const { name, email, status, location, remarks } = req.body;
-    const timestamp = new Date().toISOString();
+
+    // Format timestamp in IST
+    const istFormatter = new Intl.DateTimeFormat('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      dateStyle: 'short',
+      timeStyle: 'medium',
+    });
+    const timestamp = istFormatter.format(new Date());
 
     const client = await auth.getClient();
     const sheets = google.sheets({ version: 'v4', auth: client });
@@ -47,6 +54,7 @@ app.post('/mark-attendance', async (req, res) => {
     res.status(500).json({ error: 'Something went wrong' });
   }
 });
+
 
 // ✅ Use Render-assigned port
 const PORT = process.env.PORT || 3000;
